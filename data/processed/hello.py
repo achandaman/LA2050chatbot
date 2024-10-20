@@ -5,13 +5,25 @@ import matplotlib.pyplot as plt
 import os
 from elasticsearch import Elasticsearch
 from IPython.display import display
+# Get the directory where the current script is located
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct file paths relative to the script's location
+org_data_path = './data/organizations-new.json'
+data_2019_path = './data/idea-2019-new.json'
+data_2020_path = './data/idea-2020-new.json'
+data_2021_path = './data/idea-2021-new.json'
+data_2022_path = './data/idea-2022-new.json'
+data_2024_path = './data/idea-2024-new.json'
 def load_json_to_df(file_path):
     with open(file_path, encoding='utf-8') as f:
         return pd.json_normalize(json.load(f))
-df_org = load_json_to_df(r'C:\Users\Andrew\Downloads\organizations-new.json')
-df = load_json_to_df(r'C:\Users\Andrew\hello\idea-2024-new.json')
-df_22 = load_json_to_df(r'C:\Users\Andrew\Downloads\idea-2022-new.json')
-df_21 = load_json_to_df(r'C:\Users\Andrew\Downloads\idea-2021-new.json')
+df_org = load_json_to_df(org_data_path)
+df_19 = load_json_to_df(data_2019_path)
+df_20 = load_json_to_df(data_2020_path)
+df_21 = load_json_to_df(data_2021_path)
+df_22 = load_json_to_df(data_2022_path)
+df_24 = load_json_to_df(data_2024_path)
 
 
 df_21.columns = ['Title', 'Slug', 'Year', 'Organization', 'Description', 'Goal', 'Ranking', 
@@ -25,7 +37,7 @@ df_22.columns = ['Title', 'Slug','Year', 'Organization', 'Description', 'Goal','
                    'Project Description','People Impacted','Impact on LA' ,'Working Areas in LA',
                    'Stage of Innovation', 'Collaborations','Companies']
 
-df.columns = ['Title', 'Slug', 'Year', 'Organization', 'Description', 'Goal', 'Ranking',
+df_24.columns = ['Title', 'Slug', 'Year', 'Organization', 'Description', 'Goal', 'Ranking',
                    'Stage of Innovation', 'Problem Statement', 'Impact on LA', 
                    'Evidence of Success', 'Project Description', 'Impact Metrics', 
                    'People Impacted', 'Collaborations']
@@ -36,7 +48,7 @@ df_org.columns = ['Slug', 'Status', 'Website', 'Instagram', 'Twitter', 'FaceBook
 df_21['Impact Metrics'] = df_21[['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Play Metrics', 'Create Metrics']].apply(lambda x: ', '.join(x.dropna()), axis=1)
 df_21.drop(['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Play Metrics', 'Create Metrics'], axis=1, inplace=True)
 
-for df in [df_21, df_22, df]:
+for df in [df_21, df_22, df_24]:
     df.drop(['Ranking'], axis=1, inplace=True)
 
 
@@ -45,7 +57,7 @@ df_21['Collaborations'].fillna('Working Individually')
 df_21['People Impacted'].fillna('Not Applicable')
 df_22['Collaborations'] = df_22['Collaborations'].fillna('Working Individually')
 df_22 = df_22.fillna('Not Applicable')
-df = df.fillna('Working Individually')
+df_24 = df_24.fillna('Working Individually')
 df_org = df_org.fillna('N/A')
 df_org.replace("", "N/A", inplace = True)
 
@@ -55,7 +67,7 @@ def extract_direct_impact(text):
         return float(match.group(1).replace(',', ''))  # Remove commas and convert to float
     return None
 
-for df in [df_21, df_22, df]:
+for df in [df_21, df_22, df_24]:
     df['People Impacted'] = df['People Impacted'].apply(extract_direct_impact).fillna('Not Applicable')
 
 
@@ -66,7 +78,7 @@ def merge_dataframes(df1, df2):
     merged.rename(columns={'Title_x': 'Title', 'Slug_x': 'Slug'}, inplace=True) 
     return merged.drop(['Slug_y', 'Title_y'], axis=1)
 
-final_list = merge_dataframes(df, df_org)
+final_list = merge_dataframes(df_24, df_org)
 final_list_22 = merge_dataframes(df_22, df_org)
 final_list_21 = merge_dataframes(df_21, df_org)
 
