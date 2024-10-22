@@ -14,6 +14,7 @@ data_2019_path = './data/idea-2019-new.json'
 data_2020_path = './data/idea-2020-new.json'
 data_2021_path = './data/idea-2021-new.json'
 data_2022_path = './data/idea-2022-new.json'
+data_2023_path = './data/idea-2023-new.json'
 data_2024_path = './data/idea-2024-new.json'
 def load_json_to_df(file_path):
     with open(file_path, encoding='utf-8') as f:
@@ -23,35 +24,64 @@ df_19 = load_json_to_df(data_2019_path)
 df_20 = load_json_to_df(data_2020_path)
 df_21 = load_json_to_df(data_2021_path)
 df_22 = load_json_to_df(data_2022_path)
+df_23 = load_json_to_df(data_2023_path)
 df_24 = load_json_to_df(data_2024_path)
 
+df_19.columns = ['Title', 'Slug', 'Year', 'Organization', 'Summary', 'Goal', 'Ranking',
+                    'Play Metrics', 'Working Areas in LA', 'Stage of Innovation','Problem Statement',
+                     'Play Impact', 'Evidence of Success','Live Impact', 'Live Metrics','Companies'
+                    ,'Create Metrics', 'Create Impact','Connect Metrics', 
+                    'Connect Impact','Learn Metrics', 'Learn Impact']
 
-df_21.columns = ['Title', 'Slug', 'Year', 'Organization', 'Description', 'Goal', 'Ranking', 
+df_20.columns = [ 'Title', 'Slug', 'Year', 'Organization', 'Summary', 'Goal', 'Ranking',
+                  'People Impacted', 'Play Metrics', 'Additional Goals', 
+                  'Stage of Innovation', 'Evidence of Success', 'Valuable Resources', 
+                  'Working Areas in LA', 'Collaborations', 'Problem Statement', 
+                  'Project Description', 'Impact on LA', 'Learn Metrics',
+                  'Live Metrics', 'Create Metrics', 'COVID-19 Impact', 
+                  'Companies', 'Connect Metrics',
+                  'Impacted People1', 'Org Importance1'
+]
+df_20['People Impacted'] = df_20['People Impacted'].astype(str) + "" + df_20['Impacted People1'].astype(str)
+
+# Combine 'Project Description' with 'Org Importance1'
+df_20['Project Description'] = df_20['Project Description'].astype(str) + "" + df_20['Org Importance1'].astype(str)
+df_20 = df_20.drop(columns=['Impacted People1', 'Org Importance1'])
+df_21.columns = ['Title', 'Slug', 'Year', 'Organization', 'Summary', 'Goal', 'Ranking', 
                    'Project Description', 'Stage of Innovation', 'Evidence of Success', 
                    'Problem Statement', 'Additional Goals', 'Working Areas in LA', 
                    'Impact on LA', 'People Impacted', 'Live Metrics', 'Connect Metrics', 
                    'Collaborations', 'Learn Metrics', 'Play Metrics', 'Create Metrics']
 
-df_22.columns = ['Title', 'Slug','Year', 'Organization', 'Description', 'Goal','Ranking', 
+df_22.columns = ['Title', 'Slug','Year', 'Organization', 'Summary', 'Goal','Ranking', 
                    'Problem Statement', 'Evidence of Success', 'Impact Metrics', 
                    'Project Description','People Impacted','Impact on LA' ,'Working Areas in LA',
                    'Stage of Innovation', 'Collaborations','Companies']
-
-df_24.columns = ['Title', 'Slug', 'Year', 'Organization', 'Description', 'Goal', 'Ranking',
+df_23.columns = ['Title', 'Slug', 'Year', 'Organization', 'Summary', 'Goal', 'Ranking',
+                 'Issue Understanding','Stage of Innovation', 'Project Description',
+                   'Impact on LA', 'Working Areas in LA',  'Evidence of Success',
+                   'Primary Issue Area', 'People Impacted', 'Collaborations']
+df_24.columns = ['Title', 'Slug', 'Year', 'Organization', 'Summary', 'Goal', 'Ranking',
                    'Stage of Innovation', 'Problem Statement', 'Impact on LA', 
                    'Evidence of Success', 'Project Description', 'Impact Metrics', 
                    'People Impacted', 'Collaborations']
 
 df_org.columns = ['Slug', 'Status', 'Website', 'Instagram', 'Twitter', 'FaceBook', 'Newsletter',
                    'Title', 'IRS Standing', 'Zipcode', 'Volunteer', 'Summary', 'Category']
+
 # Combine the metric columns into one "Impact Metrics" column
+df_19['Impact Metrics'] = df_19[['Play Metrics', 'Live Metrics', 'Connect Metrics','Create Metrics', 'Learn Metrics']].apply(lambda x: ', '.join(x.dropna()), axis=1)
+df_19.drop(['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Play Metrics', 'Create Metrics'], axis=1, inplace=True)
+df_19['Impact on LA'] = df_19[['Play Impact','Connect Impact','Create Impact','Learn Impact', 'Live Impact']].apply(lambda x: ', '.join(x.dropna()), axis=1)
+df_19.drop(['Play Impact','Connect Impact','Create Impact','Learn Impact', 'Live Impact'], axis=1, inplace=True)
+
 df_21['Impact Metrics'] = df_21[['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Play Metrics', 'Create Metrics']].apply(lambda x: ', '.join(x.dropna()), axis=1)
 df_21.drop(['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Play Metrics', 'Create Metrics'], axis=1, inplace=True)
 
-for df in [df_21, df_22, df_24]:
-    df.drop(['Ranking'], axis=1, inplace=True)
-
-
+df_20['Impact Metrics'] = df_20[['Live Metrics', 'Connect Metrics','Play Metrics', 'Learn Metrics', 'Create Metrics']].apply(lambda x: ', '.join(x.dropna()), axis=1)
+df_20.drop(['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Create Metrics','Play Metrics'], axis=1, inplace=True)
+combined_output_path = r'C:\Users\Andrew\hello\combined2_data.csv'
+df_19.to_csv(combined_output_path, index=False)
 df_21 = df_21.fillna('Working Individually')
 df_21['Collaborations'].fillna('Working Individually')
 df_21['People Impacted'].fillna('Not Applicable')
@@ -67,7 +97,7 @@ def extract_direct_impact(text):
         return float(match.group(1).replace(',', ''))  # Remove commas and convert to float
     return None
 
-for df in [df_21, df_22, df_24]:
+for df in [df_21, df_22, df_24, df_20]:
     df['People Impacted'] = df['People Impacted'].apply(extract_direct_impact).fillna('Not Applicable')
 
 
@@ -81,8 +111,9 @@ def merge_dataframes(df1, df2):
 final_list = merge_dataframes(df_24, df_org)
 final_list_22 = merge_dataframes(df_22, df_org)
 final_list_21 = merge_dataframes(df_21, df_org)
-
-combined_df = pd.concat([final_list, final_list_22, final_list_21], ignore_index=True)
+final_list_20 =  merge_dataframes(df_20,df_org)
+final_list_19 = merge_dataframes(df_19,df_org)
+combined_df = pd.concat([final_list, final_list_22, final_list_21, final_list_20, final_list_19], ignore_index=True)
 
 # Fill any irregular values in the combined dataframe
 combined_df['Working Areas in LA'] = combined_df['Working Areas in LA'].fillna('Los Angeles')
@@ -90,8 +121,7 @@ combined_df['Additional Goals'] = combined_df['Additional Goals'].str.replace('L
 combined_df['Additional Goals'] = combined_df['Additional Goals'].str.replace('LA is the healthiest place to ', '', regex=False)
 combined_df['Goal'] = combined_df[['Goal', 'Additional Goals']].apply(lambda x: ' | '.join(x.dropna()), axis=1)
 combined_df['Companies'] = combined_df['Companies'].fillna('Not Applicable')
-combined_df.fillna('N/A')
-
+combined_df = combined_df.fillna('N/A')
 
 combined_df.drop(['Additional Goals'], axis=1, inplace=True)
 
