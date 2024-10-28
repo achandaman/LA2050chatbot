@@ -67,7 +67,7 @@ df_24.columns = ['Title', 'Slug', 'Year', 'Organization', 'Summary', 'Goal', 'Ra
                    'People Impacted', 'Collaborations']
 
 df_org.columns = ['Slug', 'Status', 'Website', 'Instagram', 'Twitter', 'FaceBook', 'Newsletter',
-                   'Title', 'IRS Standing', 'Zipcode', 'Volunteer', 'Summary', 'Category']
+                   'Title', 'IRS Standing', 'Zipcode', 'Volunteer', 'Mission Statement', 'Category']
 
 # Combine the metric columns into one "Impact Metrics" column
 df_19['Impact Metrics'] = df_19[['Play Metrics', 'Live Metrics', 'Connect Metrics','Create Metrics', 'Learn Metrics']].apply(lambda x: ', '.join(x.dropna()), axis=1)
@@ -80,8 +80,7 @@ df_21.drop(['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Play Metrics', 
 
 df_20['Impact Metrics'] = df_20[['Live Metrics', 'Connect Metrics','Play Metrics', 'Learn Metrics', 'Create Metrics']].apply(lambda x: ', '.join(x.dropna()), axis=1)
 df_20.drop(['Live Metrics', 'Connect Metrics', 'Learn Metrics', 'Create Metrics','Play Metrics'], axis=1, inplace=True)
-combined_output_path = r'C:\Users\Andrew\hello\combined2_data.csv'
-df_19.to_csv(combined_output_path, index=False)
+
 df_21 = df_21.fillna('Working Individually')
 df_21['Collaborations'].fillna('Working Individually')
 df_21['People Impacted'].fillna('Not Applicable')
@@ -124,7 +123,8 @@ combined_df['Companies'] = combined_df['Companies'].fillna('Not Applicable')
 combined_df = combined_df.fillna('N/A')
 
 combined_df.drop(['Additional Goals'], axis=1, inplace=True)
-
+combined_df.rename(columns={'Summary_x': 'Summary', 'Summary_y': 'Organization Statement'}, inplace=True) 
 # Save the combined dataframe to a CSV file
 combined_output_path = r'C:\Users\Andrew\hello\combined1_data.csv'
 combined_df.to_csv(combined_output_path, index=False)
+
