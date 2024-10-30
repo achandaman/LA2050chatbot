@@ -87,8 +87,8 @@ df_21['People Impacted'].fillna('Not Applicable')
 df_22['Collaborations'] = df_22['Collaborations'].fillna('Working Individually')
 df_22 = df_22.fillna('Not Applicable')
 df_24 = df_24.fillna('Working Individually')
-df_org = df_org.fillna('N/A')
-df_org.replace("", "N/A", inplace = True)
+df_org = df_org.fillna('Not Applicable')
+df_org.replace("", "Not Applicable", inplace = True)
 
 def extract_direct_impact(text):
     match = re.search(r'Direct Impact: ([\d,]+\.?\d*)', text)
@@ -97,7 +97,7 @@ def extract_direct_impact(text):
     return None
 
 for df in [df_21, df_22, df_24, df_20]:
-    df['People Impacted'] = df['People Impacted'].apply(extract_direct_impact).fillna('Not Applicable')
+    df['People Impacted'] = df['People Impacted'].apply(extract_direct_impact)
 
 
 df_org = df_org.drop_duplicates(subset='Title')
@@ -120,11 +120,11 @@ combined_df['Additional Goals'] = combined_df['Additional Goals'].str.replace('L
 combined_df['Additional Goals'] = combined_df['Additional Goals'].str.replace('LA is the healthiest place to ', '', regex=False)
 combined_df['Goal'] = combined_df[['Goal', 'Additional Goals']].apply(lambda x: ' | '.join(x.dropna()), axis=1)
 combined_df['Companies'] = combined_df['Companies'].fillna('Not Applicable')
-combined_df = combined_df.fillna('N/A')
+combined_df['Collaborations'] = combined_df['Collaborations'].fillna("Working Individually")
+combined_df = combined_df.fillna('Not Applicable')
 
 combined_df.drop(['Additional Goals'], axis=1, inplace=True)
 combined_df.rename(columns={'Summary_x': 'Summary', 'Summary_y': 'Organization Statement'}, inplace=True) 
 # Save the combined dataframe to a CSV file
-combined_output_path = r'C:\Users\Andrew\hello\combined1_data.csv'
-combined_df.to_csv(combined_output_path, index=False)
+
 
