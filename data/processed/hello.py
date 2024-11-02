@@ -7,9 +7,38 @@ from elasticsearch import Elasticsearch
 from IPython.display import display
 # Get the directory where the current script is located
 base_dir = os.path.dirname(os.path.abspath(__file__))
-
+stage_mapping = {
+    'Expansion of Existing Work': [
+        'Expand existing project, program, or initiative (expanding and continuing ongoing, successful work)',
+        'Expand existing project, program, or initiative',
+        'Expand existing program',
+        'Expand existing program (expanding and continuing ongoing successful projects)'
+    ],
+    'New or Pilot Projects': [
+        'Pilot or new project, program, or initiative (testing or implementing a new idea)',
+        'Pilot or new project, program, or initiative',
+        'Pilot project or new program',
+        'Pilot project (testing a new idea on a small scale to prove feasibility)'
+    ],
+    'Proven Solutions Applied to New Areas': [
+        'Applying a proven model or solution to a new issue or sector (e.g., using a job recruiting software or strategy to match clients to supportive housing sites, applying demonstrated strategies from advocating for college affordability to advocating for housing affordability and homelessness, etc.)',
+        'Applying a proven solution to a new issue or sector (using an existing model, tool, resource, strategy, etc. for a new purpose)',
+        'Applying a proven model or solution to a new issue or sector (e.g, using a job recruiting software or strategy to match clients to supportive housing sites, applying demonstrated strategies from advocating for college affordability to advocating for housing affordability and homelessness, etc.)',
+        'Lateral application (testing feasibility of a proven action/solution to a new issue or sector)'
+    ],
+    'Research and Feasibility': [
+        'Research (initial work to identify and understand the problem)',
+        'Research (identifying / understanding the problem)',
+        'Post-pilot (testing an expansion of concept after initially successful pilot)'
+    ]
+}
 # Construct file paths relative to the script's location
 org_data_path = './data/organizations-new.json'
+#data_2013_path = './data/idea-2013-new.json'
+#data_2014_path = './data/idea-2014-new.json'
+#data_2015_path = './data/idea-2015-new.json'
+#data_2016_path = './data/idea-2016-new.json'
+#data_2018_path = './data/idea-2018-new.json'
 data_2019_path = './data/idea-2019-new.json'
 data_2020_path = './data/idea-2020-new.json'
 data_2021_path = './data/idea-2021-new.json'
@@ -125,6 +154,20 @@ combined_df = combined_df.fillna('Not Applicable')
 
 combined_df.drop(['Additional Goals'], axis=1, inplace=True)
 combined_df.rename(columns={'Summary_x': 'Summary', 'Summary_y': 'Organization Statement'}, inplace=True) 
-# Save the combined dataframe to a CSV file
+
+def map_stage_individual(stage, mapping):
+    """Maps each 'Stage of Innovation' entry to a standardized category based on the stage_mapping dictionary."""
+    for key, values in mapping.items():
+        if stage.strip() in values:  # Strip any leading/trailing whitespace for matching
+            return key
+    return 'Other'
+combined_df['Stage of Innovation'] = combined_df['Stage of Innovation'].apply(map_stage_individual, mapping=stage_mapping)
+combined_df['Goal'] = combined_df['Goal'].str.replace(r'\s\|\sWorking Individually', '', regex=True)
+# Step 1: Sort each combination alphabetically for consistent ordering
+combined_df['Goal'] = combined_df['Goal'].apply(lambda x: ' | '.join(sorted(x.split(' | '))))
+combined_df['Goal'] = combined_df['Goal'].apply(lambda x: x.split(' | ')[0] if len(set(x.split(' | '))) == 1 else x)
+
+# Save the modified DataFrame to a CSV file
+combined_df.to_csv('combined_data_with_consolidation.csv', index=False)
 
 
