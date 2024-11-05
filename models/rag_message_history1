@@ -1,0 +1,51 @@
+import json
+from datetime import datetime
+import os
+
+# Load or initialize message history
+message_history = []
+if os.path.exists("message_history.json"):
+    with open("message_history.json", "r") as f:
+        try:
+            message_history = json.load(f)
+        except json.JSONDecodeError:
+            message_history = []
+
+# Function to update message history with serialization
+def update_message_history(user_query, bot_response, retrieved_context=None):
+    if retrieved_context and isinstance(retrieved_context, list):
+        serialized_context = [
+            {"page_content": doc.page_content, "metadata": doc.metadata} if hasattr(doc, "page_content") else str(doc)
+            for doc in retrieved_context
+        ]
+    else:
+        serialized_context = retrieved_context
+
+    if bot_response and bot_response.lower() != "i don't know":
+        entry = {
+            "query": user_query,
+            "response": bot_response,
+            "retrieved_context": serialized_context,
+            "timestamp": datetime.now().isoformat()
+        }
+        message_history.append(entry)
+
+# Function to format the prompt with recent message history for context
+def format_prompt_with_history(history, current_query, n=3):
+    context = "\n".join(
+        [f"User: {entry['query']}\nBot: {entry['response']}" for entry in history[-n:]]
+    )
+    return f"{context}\nUser: {current_query}\nBot:"
+
+user_query = "I am interested in donating to a nonprofit today. Which organizations focus on helping youth??"
+
+# Test query with history
+prompt_with_history = format_prompt_with_history(message_history, user_query)
+response_with_history = rag_chain.invoke({"input": prompt_with_history})
+bot_response_with_history = response_with_history.get("answer", "No response found")
+print(bot_response_with_history)
+
+# Update message history and save if the response is meaningful
+update_message_history(user_query, bot_response_with_history, response_with_history.get("context"))
+with open("message_history.json", "w") as f:
+    json.dump(message_history, f, indent=4)
