@@ -1,0 +1,80 @@
+[
+    {
+        "query": "I love animals",
+        "response": "The Gentle Barn and Fostering UNITY empower foster and systems-impacted youth through transformative healing experiences with rescued animals, fostering resilience and empathy. Through hands-on care, participants cultivate essential life skills and forge a profound connection with the natural world, promoting growth and healing within themselves.",
+        "retrieved_context": [
+            {
+                "page_content": "The Gentle Barn and Fostering UNITY unite to empower foster and systems-impacted youth through transformative, trauma-informed healing experiences. Interacting with rescued animals, participants discover resilience, empathy, and self-understanding, mirroring the animals' journey of healing and forgiveness. Through hands-on care, they cultivate essential life skills while forging a profound connection with the natural world, fostering growth, and healing within themselves.",
+                "metadata": {
+                    "seq_num": 548,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            },
+            {
+                "page_content": "This project will see the development of a dog park at Bridge to Home\u2019s new shelter for individuals and families with children. People who have undergone trauma and homelessness can achieve more significant, more sustainable positive outcomes when they can thrive with their dog(s). We want to enhance our trauma-informed environment by encouraging the healthy, organic, real-life therapeutic benefits of time spent with the beloved pets who have accompanied the people (and children) we serve every step of the way through complex journeys.",
+                "metadata": {
+                    "seq_num": 194,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            },
+            {
+                "page_content": "I want to create a high-quality video on the number of children impacted by abuse every year. I then plan to set up drive in movie events throughout LA to show this video (I own a drive-in movie business that includes several movie screens and the staff to set it up).",
+                "metadata": {
+                    "seq_num": 489,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            },
+            {
+                "page_content": "A.L.I.V.E. (Art Living in Vibrant Environments) by RuckusRoots unites art, plants, and people to transform industrialized and underutilized urban areas into thriving hubs of STEAM education. With three established A.L.I.V.E. sites at youth-centered spaces in South LA and South Bay, we are ready to implement a cohesive program plan that engages participants in three topics: urban microfarms, native plant education, and responsive, community-led artworks.",
+                "metadata": {
+                    "seq_num": 756,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            }
+        ],
+        "timestamp": "2024-11-05T16:58:30.110192"
+    },
+    {
+        "query": "What are organizations I can help based on my interests?",
+        "response": "You can consider supporting organizations like The Gentle Barn, Fostering UNITY, or programs like the \"Healing Hooves\" that provide mental health support to foster youth through Equine Assisted Therapy. These initiatives focus on empowering youth through interactions with rescued animals and promoting healing and growth through animal-assisted activities.",
+        "retrieved_context": [
+            {
+                "page_content": "The Gentle Barn and Fostering UNITY unite to empower foster and systems-impacted youth through transformative, trauma-informed healing experiences. Interacting with rescued animals, participants discover resilience, empathy, and self-understanding, mirroring the animals' journey of healing and forgiveness. Through hands-on care, they cultivate essential life skills while forging a profound connection with the natural world, fostering growth, and healing within themselves.",
+                "metadata": {
+                    "seq_num": 548,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            },
+            {
+                "page_content": "The \"Healing Hooves\" program provides mental health support to foster youth using Equine Assisted Therapy. Through a unique experiential healing modality working with horses, youth improve mental health and emotional intelligence. Access to mental health services and outdoor spaces is often inaccessible to foster youth, we provide both. The horse-human bond has tremendous mental health and socialization benefits teaching empathy, respect, communication, and teamwork; life changing, lifelong skills benefiting participants and their communities.",
+                "metadata": {
+                    "seq_num": 847,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            },
+            {
+                "page_content": "This project will see the development of a dog park at Bridge to Home\u2019s new shelter for individuals and families with children. People who have undergone trauma and homelessness can achieve more significant, more sustainable positive outcomes when they can thrive with their dog(s). We want to enhance our trauma-informed environment by encouraging the healthy, organic, real-life therapeutic benefits of time spent with the beloved pets who have accompanied the people (and children) we serve every step of the way through complex journeys.",
+                "metadata": {
+                    "seq_num": 194,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            },
+            {
+                "page_content": "This program aims to give educational support for Youth in the foster care systems, or are impacted by the systems, by means of carefully tailored tutoring. It also aims to offer methods of processing feelings through art therapy and neurofeedback combined with brain mapping.",
+                "metadata": {
+                    "seq_num": 115,
+                    "source": "C:\\Users\\Vivien Chen\\Desktop\\LA2050chatbot\\notebooks\\idea-2024-new.json",
+                    "start_index": 0
+                }
+            }
+        ],
+        "timestamp": "2024-11-05T16:58:53.987058"
+    }
+]
